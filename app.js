@@ -28,19 +28,49 @@ const db = getFirestore(app);
 
 // Global POS State & Default Values
 let activeCart = [
-    { name: "Panir Tika", qty: 1, price: 250 },
-    { name: "Veg Thali", qty: 1, price: 70 }
+    { name: "Panir Tika (Full)", qty: 1, price: 250 },
+    { name: "Veg Thali (Full)", qty: 1, price: 70 }
 ];
 let loadedMenu = [];
+let availableTables = [];
 let currentTable = "2";
 let currentOrderId = "ORD106632";
 
 // Window Load Initializer
 window.addEventListener('DOMContentLoaded', () => {
+    initTables();
     initRealtimeListeners();
     updateDateTime();
     renderCart();
 });
+
+// Initialize Tables 1 to 16 + Custom Options
+function initTables() {
+    availableTables = [];
+    for (let i = 1; i <= 16; i++) {
+        availableTables.push(`Table ${i}`);
+    }
+    availableTables.push("Takeaway", "Delivery");
+    renderTableDropdown();
+}
+
+function renderTableDropdown() {
+    const select = document.getElementById('pos-table-select');
+    select.innerHTML = availableTables.map(t => `
+        <option value="${t}" ${t === "Table " + currentTable || t === currentTable ? 'selected' : ''}>${t}</option>
+    `).join('');
+}
+
+// Add Custom Table Prompt
+window.addNewTablePrompt = function() {
+    const newName = prompt("Enter New Table Name / Number (e.g. Table 17 or Rooftop 1):");
+    if (newName && !availableTables.includes(newName)) {
+        availableTables.unshift(newName);
+        renderTableDropdown();
+        document.getElementById('pos-table-select').value = newName;
+        onTableChange(newName);
+    }
+};
 
 // Realtime Firestore Listeners
 function initRealtimeListeners() {
@@ -86,28 +116,39 @@ function updateDateTime() {
     document.getElementById('r-time').innerText = `Time: ${timeStr}`;
 }
 
-// POS Menu Grid Rendering
+// POS Menu Grid Rendering with Half & Full Price Support
 function renderMenuGrid(items) {
     const grid = document.getElementById('pos-menu-grid');
     if (items.length === 0) {
         grid.innerHTML = `
-            <div class="menu-card" onclick="addToCart('Panir Tika', 250)">
+            <div class="menu-card">
                 <div class="menu-card-title">Panir Tika</div>
-                <div class="menu-card-price">₹250</div>
+                <div class="menu-card-prices">
+                    <button class="price-btn" onclick="addToCart('Panir Tika (Half)', 140)">H: ₹140</button>
+                    <button class="price-btn" onclick="addToCart('Panir Tika (Full)', 250)">F: ₹250</button>
+                </div>
             </div>
-            <div class="menu-card" onclick="addToCart('Veg Thali', 70)">
+            <div class="menu-card">
                 <div class="menu-card-title">Veg Thali</div>
-                <div class="menu-card-price">₹70</div>
+                <div class="menu-card-prices">
+                    <button class="price-btn full-only" onclick="addToCart('Veg Thali (Full)', 70)">₹70</button>
+                </div>
             </div>`;
         return;
     }
 
-    grid.innerHTML = items.map(item => `
-        <div class="menu-card" onclick="addToCart('${item.name}', ${item.priceFull})">
-            <div class="menu-card-title">${item.name}</div>
-            <div class="menu-card-price">₹${item.priceFull}</div>
-        </div>
-    `).join('');
+    grid.innerHTML = items.map(item => {
+        const hasHalf = item.priceHalf && item.priceHalf > 0;
+        return `
+            <div class="menu-card">
+                <div class="menu-card-title">${item.name}</div>
+                <div class="menu-card-prices">
+                    ${hasHalf ? `<button class="price-btn" onclick="addToCart('${item.name} (Half)', ${item.priceHalf})">H: ₹${item.priceHalf}</button>` : ''}
+                    <button class="price-btn ${!hasHalf ? 'full-only' : ''}" onclick="addToCart('${item.name} (Full)', ${item.priceFull})">F: ₹${item.priceFull}</button>
+                </div>
+            </div>
+        `;
+    }).join('');
 }
 
 // Cart Items Management
@@ -191,7 +232,7 @@ window.openCustomItemModal = function() {
     const name = prompt("Dish Name:");
     const price = prompt("Price (₹):");
     if (name && price) {
-        addToCart(name, parseFloat(price));
+        addToCart(name + " (Custom)", parseFloat(price));
     }
 };
 
@@ -277,7 +318,7 @@ function renderMenuAdminTable(items) {
         <tr>
             <td>${i.name}</td>
             <td>${i.category}</td>
-            <td>₹${i.priceHalf}</td>
+            <td>₹${i.priceHalf || 0}</td>
             <td>₹${i.priceFull}</td>
             <td><button style="color:#ef4444; border:none; background:none; cursor:pointer;" onclick="deleteRecord('menu', '${i.id}')"><i class="fa-solid fa-trash"></i></button></td>
         </tr>
