@@ -51,23 +51,20 @@
                 </div>
 
                 <div class="menu-grid" id="pos-menu-grid">
-                    <!-- Dynamic Menu Dishes -->
+                    <!-- Dynamic Menu Dishes with Half/Full choice -->
                 </div>
             </div>
 
             <!-- Middle Column: Active Order Cart -->
             <div class="pos-middle">
                 <div class="table-bar">
-                    <label>Select Table:</label>
-                    <select id="pos-table-select" onchange="onTableChange(this.value)">
-                        <option value="1">Table 1</option>
-                        <option value="2" selected>Table 2</option>
-                        <option value="3">Table 3</option>
-                        <option value="4">Table 4</option>
-                        <option value="5">Table 5</option>
-                        <option value="Takeaway">Takeaway</option>
-                        <option value="Delivery">Delivery</option>
-                    </select>
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <label>Table:</label>
+                        <select id="pos-table-select" onchange="onTableChange(this.value)">
+                            <!-- Tables 1 to 16 populated by JS -->
+                        </select>
+                        <button class="btn-add-table" onclick="addNewTablePrompt()" title="Add New Table"><i class="fa-solid fa-plus"></i></button>
+                    </div>
                     <span class="order-id-badge" id="display-order-id">ORD106632</span>
                 </div>
 
@@ -92,7 +89,7 @@
                 </div>
             </div>
 
-            <!-- Right Column: LIVE EXACT THERMAL RECEIPT DISPLAY (Matching Image 1:1) -->
+            <!-- Right Column: LIVE EXACT THERMAL RECEIPT DISPLAY -->
             <div class="pos-right">
                 <div class="preview-header">LIVE PRINT PREVIEW</div>
                 
@@ -180,8 +177,8 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label>Half Price (₹)</label>
-                                <input type="number" id="menu-price-half" placeholder="0 if N/A" value="0">
+                                <label>Half Price (₹) [0 if N/A]</label>
+                                <input type="number" id="menu-price-half" placeholder="0" value="0">
                             </div>
                             <div class="form-group">
                                 <label>Full Price (₹)</label>
