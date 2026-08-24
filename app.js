@@ -12,7 +12,7 @@ import {
     limit 
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// Saved Firebase Credentials
+// Firebase Configuration
 const firebaseConfig = {
     apiKey: "AIzaSyBLpg8fQo01qyNbLdWeHtzS8YSujGyN7MA",
     authDomain: "indian-food-forest-pos.firebaseapp.com",
@@ -22,11 +22,11 @@ const firebaseConfig = {
     appId: "1:324822787673:web:979ab044f03327ed743348"
 };
 
-// Initialize Firebase & Database
+// Initialize Firebase & Database Instance
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Global POS State
+// Global POS State & Default Values
 let activeCart = [
     { name: "Panir Tika", qty: 1, price: 250 },
     { name: "Veg Thali", qty: 1, price: 70 }
@@ -42,9 +42,9 @@ window.addEventListener('DOMContentLoaded', () => {
     renderCart();
 });
 
-// Realtime Firestore Collections Listeners
+// Realtime Firestore Listeners
 function initRealtimeListeners() {
-    // 1. Menu Snapshot
+    // 1. Menu Collection
     onSnapshot(collection(db, "menu"), (snapshot) => {
         loadedMenu = [];
         snapshot.forEach(docSnap => {
@@ -54,21 +54,21 @@ function initRealtimeListeners() {
         renderMenuAdminTable(loadedMenu);
     });
 
-    // 2. Inventory Snapshot
+    // 2. Inventory Collection
     onSnapshot(collection(db, "inventory"), (snapshot) => {
         const items = [];
         snapshot.forEach(docSnap => items.push({ id: docSnap.id, ...docSnap.data() }));
         renderInventoryTable(items);
     });
 
-    // 3. Expenses Snapshot
+    // 3. Expenses Collection
     onSnapshot(collection(db, "expenses"), (snapshot) => {
         const items = [];
         snapshot.forEach(docSnap => items.push({ id: docSnap.id, ...docSnap.data() }));
         renderExpenseTable(items);
     });
 
-    // 4. History Snapshot
+    // 4. History Collection
     onSnapshot(query(collection(db, "orders"), orderBy("createdAt", "desc")), (snapshot) => {
         const items = [];
         snapshot.forEach(docSnap => items.push({ id: docSnap.id, ...docSnap.data() }));
@@ -76,7 +76,7 @@ function initRealtimeListeners() {
     });
 }
 
-// Date & Time Formatting
+// Live Date & Time Formatter
 function updateDateTime() {
     const now = new Date();
     const dateStr = `${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()}`;
@@ -86,7 +86,7 @@ function updateDateTime() {
     document.getElementById('r-time').innerText = `Time: ${timeStr}`;
 }
 
-// Menu Grid Rendering
+// POS Menu Grid Rendering
 function renderMenuGrid(items) {
     const grid = document.getElementById('pos-menu-grid');
     if (items.length === 0) {
@@ -110,7 +110,7 @@ function renderMenuGrid(items) {
     `).join('');
 }
 
-// Cart Logic & Thermal Sync
+// Cart Items Management
 window.addToCart = function(name, price) {
     const existing = activeCart.find(i => i.name === name);
     if (existing) {
@@ -155,7 +155,7 @@ function renderCart() {
     syncThermalReceipt(activeCart, subtotal);
 }
 
-// Exact Receipt Paper Update
+// Sync Preview Receipt Layout
 function syncThermalReceipt(items, total, orderId = currentOrderId, table = currentTable) {
     const rList = document.getElementById('r-items-list');
     
@@ -173,20 +173,20 @@ function syncThermalReceipt(items, total, orderId = currentOrderId, table = curr
     document.getElementById('r-grandtotal').innerText = `₹${total}`;
 }
 
-// Table Dropdown Handler
+// Table Selection Handler
 window.onTableChange = function(val) {
     currentTable = val;
     document.getElementById('r-table').innerText = `Table: ${val}`;
 };
 
-// Filter Menu Items
+// Search Menu Items
 window.filterMenu = function() {
     const queryStr = document.getElementById('pos-search').value.toLowerCase();
     const filtered = loadedMenu.filter(m => m.name.toLowerCase().includes(queryStr));
     renderMenuGrid(filtered);
 };
 
-// Manual Item Add Prompt
+// Add Custom Dish Prompt
 window.openCustomItemModal = function() {
     const name = prompt("Dish Name:");
     const price = prompt("Price (₹):");
@@ -195,7 +195,7 @@ window.openCustomItemModal = function() {
     }
 };
 
-// Save Bill to Firestore & Print Thermal Paper
+// Save Order to Firebase & Print Thermal Receipt
 window.saveAndPrintOrder = async function() {
     if (activeCart.length === 0) return alert("Cart empty hai!");
 
@@ -214,7 +214,7 @@ window.saveAndPrintOrder = async function() {
     try {
         await addDoc(collection(db, "orders"), billPayload);
     } catch (err) {
-        console.warn("Printing local copy...", err);
+        console.warn("Saving offline / local print execution...", err);
     }
 
     currentOrderId = newOrderId;
@@ -223,7 +223,7 @@ window.saveAndPrintOrder = async function() {
     window.print();
 };
 
-// Repost Last Invoice
+// Repost Last Receipt
 window.repostLastBill = async function() {
     try {
         const q = query(collection(db, "orders"), orderBy("createdAt", "desc"), limit(1));
@@ -234,11 +234,11 @@ window.repostLastBill = async function() {
             window.print();
         });
     } catch (err) {
-        alert("Firebase credentials setup verify karein!");
+        alert("Previous order fetch karne me issue aaya!");
     }
 };
 
-// Upload Menu Item
+// Admin Section Handlers (Menu, Stock, Expense)
 window.handleMenuUpload = async function(e) {
     e.preventDefault();
     const name = document.getElementById('menu-item-name').value;
@@ -250,7 +250,6 @@ window.handleMenuUpload = async function(e) {
     document.getElementById('menu-form').reset();
 };
 
-// Inventory Add
 window.handleInventoryAdd = async function(e) {
     e.preventDefault();
     const name = document.getElementById('inv-name').value;
@@ -261,7 +260,6 @@ window.handleInventoryAdd = async function(e) {
     document.getElementById('inventory-form').reset();
 };
 
-// Expense Add
 window.handleExpenseAdd = async function(e) {
     e.preventDefault();
     const title = document.getElementById('exp-title').value;
@@ -272,7 +270,7 @@ window.handleExpenseAdd = async function(e) {
     document.getElementById('expense-form').reset();
 };
 
-// Admin Render Tables
+// Render Admin Tables Data
 function renderMenuAdminTable(items) {
     const body = document.getElementById('menu-master-table');
     body.innerHTML = items.map(i => `
@@ -333,7 +331,7 @@ function renderHistoryTable(items) {
     };
 }
 
-// Record Delete Helper
+// Firestore Delete Helper
 window.deleteRecord = async function(collName, id) {
     if (confirm("Record delete karein?")) {
         await deleteDoc(doc(db, collName, id));
