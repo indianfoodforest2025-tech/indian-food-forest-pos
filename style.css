@@ -181,7 +181,7 @@ body {
 
 .menu-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 12px;
     overflow-y: auto;
     padding-right: 4px;
@@ -191,31 +191,53 @@ body {
     background: #1e293b;
     border: 1px solid #334155;
     border-radius: 10px;
-    padding: 12px;
-    cursor: pointer;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 90px;
-    transition: transform 0.1s ease, border-color 0.2s ease;
+    min-height: 100px;
+    transition: border-color 0.2s ease;
 }
 
 .menu-card:hover {
     border-color: #38bdf8;
-    transform: translateY(-2px);
 }
 
 .menu-card-title {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     color: #f8fafc;
     line-height: 1.2;
+    margin-bottom: 6px;
 }
 
-.menu-card-price {
-    font-size: 14px;
-    font-weight: 700;
+.menu-card-prices {
+    display: flex;
+    gap: 6px;
+}
+
+.price-btn {
+    flex: 1;
+    background: #0f172a;
+    border: 1px solid #334155;
     color: #38bdf8;
+    border-radius: 6px;
+    padding: 6px 4px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.1s ease;
+}
+
+.price-btn:hover {
+    background: #0284c7;
+    color: #fff;
+    border-color: #0284c7;
+}
+
+.price-btn.full-only {
+    width: 100%;
 }
 
 /* POS MIDDLE: CART CONTAINER */
@@ -243,6 +265,20 @@ body {
     padding: 6px 10px;
     border-radius: 6px;
     outline: none;
+}
+
+.btn-add-table {
+    background: #10b981;
+    color: white;
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .order-id-badge {
