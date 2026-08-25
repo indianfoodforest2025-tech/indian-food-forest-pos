@@ -3,7 +3,7 @@ import {
     getFirestore, collection, addDoc, getDocs, onSnapshot, deleteDoc, doc, query, orderBy, limit 
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// Firebase Configuration (Aapki Same Purani Key)
+// Firebase Configuration
 const firebaseConfig = {
     apiKey: "AIzaSyBLpg8fQo01qyNbLdWeHtzS8YSujGyN7MA",
     authDomain: "indian-food-forest-pos.firebaseapp.com",
@@ -25,38 +25,57 @@ let currentTable = "1";
 let currentOrderId = "ORD-1001";
 
 // ==========================================
-// DEFAULT MENU (Aapka Diya Hua Data)
+// DEFAULT MENU (EXTENDED & CATEGORIZED)
 // ==========================================
 const defaultMenu = [
     // SOUPS
     { name: "Manchow Soup (Veg)", category: "Chinese Soup", priceHalf: 0, priceFull: 130 },
+    { name: "Hot And Sour Soup (Veg)", category: "Chinese Soup", priceHalf: 0, priceFull: 140 },
     { name: "Chicken Manchow Soup", category: "Chinese Soup", priceHalf: 0, priceFull: 160 },
+    { name: "Chicken Lung Fung Soup", category: "Chinese Soup", priceHalf: 0, priceFull: 290 },
+    
     // STARTERS VEG
     { name: "Paneer Chilly", category: "Chinese Starters (Veg)", priceHalf: 0, priceFull: 200 },
     { name: "Paneer Crispy", category: "Chinese Starters (Veg)", priceHalf: 0, priceFull: 210 },
     { name: "Manchurian (Dry)", category: "Chinese Starters (Veg)", priceHalf: 0, priceFull: 150 },
+    { name: "Veg Crispy", category: "Chinese Starters (Veg)", priceHalf: 0, priceFull: 240 },
+    { name: "Mushroom Chilly", category: "Chinese Starters (Veg)", priceHalf: 0, priceFull: 230 },
+
     // STARTERS CHICKEN
     { name: "Chicken Crispy", category: "Chinese Starters (Non-Veg)", priceHalf: 0, priceFull: 230 },
     { name: "Chicken Lollipop", category: "Chinese Starters (Non-Veg)", priceHalf: 0, priceFull: 220 },
     { name: "Chicken 65", category: "Chinese Starters (Non-Veg)", priceHalf: 0, priceFull: 220 },
+    { name: "Chicken Chilly (Dry)", category: "Chinese Starters (Non-Veg)", priceHalf: 0, priceFull: 220 },
+
     // NOODLES & RICE (With Half & Full Logic)
     { name: "Veg Triple Noodles", category: "Chinese Noodles & Rice", priceHalf: 150, priceFull: 210 },
     { name: "Chicken Triple Noodles", category: "Chinese Noodles & Rice", priceHalf: 160, priceFull: 230 },
     { name: "Veg Hakka Noodles", category: "Chinese Noodles & Rice", priceHalf: 0, priceFull: 150 },
     { name: "Chicken Fried Rice", category: "Chinese Noodles & Rice", priceHalf: 0, priceFull: 170 },
+    { name: "Veg Triple Schezwan Rice", category: "Chinese Noodles & Rice", priceHalf: 0, priceFull: 200 },
+
     // TANDOORI & KABAB
     { name: "Chicken Tandoori", category: "Kabab & Tandoori", priceHalf: 0, priceFull: 460 },
     { name: "Paneer Tikka", category: "Kabab & Tandoori", priceHalf: 0, priceFull: 240 },
+    { name: "Chicken Tikka", category: "Kabab & Tandoori", priceHalf: 0, priceFull: 260 },
+    { name: "Chicken Malai Kabab", category: "Kabab & Tandoori", priceHalf: 0, priceFull: 270 },
+
     // INDIAN MAIN COURSE
     { name: "Dal Tadka", category: "Indian Main Course", priceHalf: 0, priceFull: 130 },
     { name: "Paneer Butter Masala", category: "Indian Main Course", priceHalf: 0, priceFull: 410 },
     { name: "Butter Chicken", category: "Indian Main Course", priceHalf: 0, priceFull: 250 },
+    { name: "Chicken Masala", category: "Indian Main Course", priceHalf: 0, priceFull: 250 },
+    { name: "Veg Kolhapuri", category: "Indian Main Course", priceHalf: 0, priceFull: 215 },
+
     // BIRYANI
     { name: "Chicken Biryani", category: "Rice & Biryani", priceHalf: 0, priceFull: 160 },
     { name: "Veg Dum Biryani", category: "Rice & Biryani", priceHalf: 0, priceFull: 170 },
+    { name: "Prawns Biryani", category: "Rice & Biryani", priceHalf: 0, priceFull: 250 },
+
     // THALI
     { name: "Veg Thali", category: "Thali Specials", priceHalf: 0, priceFull: 120 },
-    { name: "Chicken Thali", category: "Thali Specials", priceHalf: 0, priceFull: 180 }
+    { name: "Chicken Thali", category: "Thali Specials", priceHalf: 0, priceFull: 180 },
+    { name: "Surmai Thali", category: "Thali Specials", priceHalf: 0, priceFull: 320 }
 ];
 
 // App Load Initializer
@@ -94,22 +113,22 @@ window.onTableChange = function(val) {
 };
 
 // ==========================================
-// FIREBASE LISTENERS & MENU RENDER
+// FIREBASE LISTENERS & MENU RENDER (BUG FIXED)
 // ==========================================
 function initRealtimeListeners() {
-    // Menu
+    // Menu Listener
     onSnapshot(collection(db, "menu"), (snapshot) => {
         let dbMenu = [];
         snapshot.forEach(docSnap => dbMenu.push({ id: docSnap.id, ...docSnap.data() }));
         
-        // Agar Firebase khali hai, toh Default Menu dikhao
-        loadedMenu = dbMenu.length > 0 ? dbMenu : defaultMenu; 
+        // BUG FIX: Ab Default Menu aur Firebase Menu dono Merge honge! (Koi gayab nahi hoga)
+        loadedMenu = [...defaultMenu, ...dbMenu]; 
         
         renderMenuGrid(loadedMenu);
         renderMenuAdminTable(loadedMenu);
     });
 
-    // Orders History
+    // Orders History Listener
     onSnapshot(query(collection(db, "orders"), orderBy("createdAt", "desc")), (snapshot) => {
         const items = [];
         snapshot.forEach(docSnap => items.push({ id: docSnap.id, ...docSnap.data() }));
@@ -227,19 +246,18 @@ function updateDateTime() {
     document.getElementById('r-time').innerText = `Time: ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
 }
 
-// Save Order & Print (WITH CART CLEAR FIX)
+// Save Order & Print 
 window.saveAndPrintOrder = async function() {
     if (activeCart.length === 0) return alert("Bhai, Cart empty hai! Pehle item add karo.");
 
     const subtotal = activeCart.reduce((sum, i) => sum + (i.price * i.qty), 0);
-    const newOrderId = "ORD-" + Math.floor(1000 + Math.random() * 9000); // Fixed ID Format
+    const newOrderId = "ORD-" + Math.floor(1000 + Math.random() * 9000); 
     
     currentOrderId = newOrderId;
     updateDateTime();
     syncThermalReceipt(activeCart, subtotal, newOrderId, currentTable);
     document.getElementById('display-order-id').innerText = newOrderId;
 
-    // Firebase Save Logic
     try {
         await addDoc(collection(db, "orders"), {
             orderId: newOrderId,
@@ -252,10 +270,9 @@ window.saveAndPrintOrder = async function() {
         console.warn("Offline Saved", err);
     }
 
-    // Print Bill
     window.print();
 
-    // BUG FIX: Print hone ke baad cart clear kar do
+    // Cart Clear 
     setTimeout(() => {
         activeCart = [];
         renderCart();
@@ -309,7 +326,7 @@ function renderHistoryTable(items) {
     };
 }
 
-// Download Excel Logic (SheetJS)
+// Download Excel Logic 
 window.exportToExcel = function() {
     const table = document.getElementById("report-table");
     const workbook = XLSX.utils.table_to_book(table, { sheet: "Sales Data" });
