@@ -49,17 +49,23 @@
                     <button class="btn-manual" onclick="openCustomItemModal()"><i class="fa-solid fa-plus"></i> Custom Item</button>
                 </div>
 
-                <!-- Categories -->
-                <div class="category-pills" id="category-pills-container">
-                    <button class="cat-pill active" onclick="filterByCategory('All')">All</button>
-                    <button class="cat-pill" onclick="filterByCategory('Chinese Soup')">Soups</button>
-                    <button class="cat-pill" onclick="filterByCategory('Chinese Starters (Veg)')">Veg Starters</button>
-                    <button class="cat-pill" onclick="filterByCategory('Chinese Starters (Non-Veg)')">Chicken Starters</button>
-                    <button class="cat-pill" onclick="filterByCategory('Chinese Noodles & Rice')">Rice/Noodles</button>
-                    <button class="cat-pill" onclick="filterByCategory('Kabab & Tandoori')">Tandoori</button>
-                    <button class="cat-pill" onclick="filterByCategory('Indian Main Course')">Indian Main</button>
-                    <button class="cat-pill" onclick="filterByCategory('Rice & Biryani')">Biryani</button>
-                    <button class="cat-pill" onclick="filterByCategory('Thali Specials')">Thalis</button>
+                <!-- NAYA UPDATE: Categories with Scroll Arrows -->
+                <div class="categories-wrapper">
+                    <button class="scroll-arrow" onclick="scrollCategories(-200)"><i class="fa-solid fa-chevron-left"></i></button>
+                    
+                    <div class="category-pills" id="category-pills-container">
+                        <button class="cat-pill active" onclick="filterByCategory('All')">All</button>
+                        <button class="cat-pill" onclick="filterByCategory('Chinese Soup')">Soups</button>
+                        <button class="cat-pill" onclick="filterByCategory('Chinese Starters (Veg)')">Veg Starters</button>
+                        <button class="cat-pill" onclick="filterByCategory('Chinese Starters (Non-Veg)')">Chicken Starters</button>
+                        <button class="cat-pill" onclick="filterByCategory('Chinese Noodles & Rice')">Rice/Noodles</button>
+                        <button class="cat-pill" onclick="filterByCategory('Kabab & Tandoori')">Tandoori</button>
+                        <button class="cat-pill" onclick="filterByCategory('Indian Main Course')">Indian Main</button>
+                        <button class="cat-pill" onclick="filterByCategory('Rice & Biryani')">Biryani</button>
+                        <button class="cat-pill" onclick="filterByCategory('Thali Specials')">Thalis</button>
+                    </div>
+
+                    <button class="scroll-arrow" onclick="scrollCategories(200)"><i class="fa-solid fa-chevron-right"></i></button>
                 </div>
 
                 <!-- Menu Cards Grid -->
@@ -282,7 +288,6 @@
             <div class="history-container">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <h3>Bill History & Report Center</h3>
-                    <!-- NAYA EXCEL BUTTON YAHAN HAI -->
                     <button class="btn-excel" onclick="exportToExcel()"><i class="fa-solid fa-file-excel"></i> Download Excel Report</button>
                 </div>
                 <div style="overflow-x:auto;">
