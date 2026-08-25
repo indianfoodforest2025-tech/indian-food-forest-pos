@@ -77,7 +77,7 @@ body {
     grid-template-columns: 1fr 340px 360px; /* Layout structure */
 }
 
-/* POS LEFT: MENU SELECTION (EKDUM FIXED AUR SCROLLABLE) */
+/* POS LEFT: MENU SELECTION */
 .pos-left { 
     display: flex; 
     flex-direction: column; 
@@ -86,7 +86,7 @@ body {
     overflow: hidden; 
 }
 
-/* Search bar aur Add button kabhi dabenge nahi */
+/* Search bar */
 .search-bar-row { 
     display: flex; 
     gap: 10px; 
@@ -115,19 +115,46 @@ body {
     cursor: pointer;
 }
 
-/* CATEGORY PILLS (Gichad-Michad FIX) */
+/* NAYA UPDATE: CATEGORIES WRAPPER & ARROWS */
+.categories-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    width: 100%;
+    margin-bottom: 4px;
+}
+
+.scroll-arrow {
+    background: #e2e8f0;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #475569;
+    flex-shrink: 0;
+    transition: background 0.2s;
+    font-size: 14px;
+}
+.scroll-arrow:hover { background: #cbd5e1; color: #0f172a; }
+
+/* CATEGORY PILLS */
 .category-pills {
     display: flex;
     gap: 8px;
     overflow-x: auto; /* Horizontal Scroll */
-    padding-bottom: 8px;
-    flex-shrink: 0; /* IMPORTANT: Box chhota nahi hoga */
-    white-space: nowrap; /* Text next line me nahi jayega */
+    flex-grow: 1;
+    scroll-behavior: smooth; /* Arrow click par smooth slide */
+    white-space: nowrap; 
+    scrollbar-width: none; /* Firefox me scrollbar hide */
 }
-
-/* Sleek Scrollbar for Categories */
-.category-pills::-webkit-scrollbar { height: 4px; }
-.category-pills::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+.category-pills::-webkit-scrollbar { 
+    display: none; /* Chrome me scrollbar hide */
+}
 
 .cat-pill {
     background: #ffffff;
@@ -138,7 +165,7 @@ body {
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    flex-shrink: 0; /* IMPORTANT: Button dabege nahi */
+    flex-shrink: 0; 
     transition: all 0.2s;
 }
 .cat-pill:hover { border-color: #10b981; color: #10b981; }
@@ -147,10 +174,10 @@ body {
 /* MENU GRID (PERFECT SIZE) */
 .menu-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(135px, 1fr)); /* Size optimized for counter */
+    grid-template-columns: repeat(auto-fill, minmax(135px, 1fr)); 
     gap: 10px;
-    overflow-y: auto; /* Sirf ye hissa scroll hoga */
-    flex-grow: 1; /* Bachi hui jagah le lega */
+    overflow-y: auto; 
+    flex-grow: 1; 
     padding-right: 6px;
     padding-bottom: 40px;
 }
@@ -173,14 +200,14 @@ body {
 }
 .menu-card:hover { border-color: #10b981; transform: translateY(-2px); }
 
-/* FONT FIX: Text out of box issue solved */
+/* FONT FIX */
 .menu-card-title {
     font-size: 12.5px;
     font-weight: 700;
     color: #1e293b;
     line-height: 1.25;
     margin-bottom: 8px;
-    word-break: break-word; /* Force break if word is too long */
+    word-break: break-word; 
 }
 
 /* BUTTON FIX */
@@ -212,7 +239,7 @@ body {
     flex-direction: column;
     padding: 16px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    height: calc(100vh - 80px); /* Height match with left column */
+    height: calc(100vh - 80px); 
 }
 
 .table-bar { display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid #e2e8f0; flex-shrink: 0; }
