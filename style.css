@@ -71,11 +71,11 @@ body {
 
 .tab-view.active { display: flex; }
 
-/* ================= 2. POS BILLING LAYOUT ================= */
+/* ================= 2. POS BILLING LAYOUT (DESKTOP DEFAULT) ================= */
 #view-pos { display: none; gap: 14px; height: 100%; }
 #view-pos.active {
     display: grid;
-    grid-template-columns: 1fr 330px 350px; /* Desktop Layout */
+    grid-template-columns: 1fr 330px 350px; /* Desktop: Menu | Cart | Receipt */
 }
 
 /* POS LEFT: MENU SELECTION */
@@ -291,20 +291,37 @@ h3 { font-size: 15px; margin-bottom: 12px; color: #0f172a; }
 .admin-table th { color: #64748b; font-weight: 700; background: #f8fafc; }
 
 
-/* ================= 3. RESPONSIVE MEDIA QUERIES (MOBILE & TABLET FIX) ================= */
+/* ================= 3. RESPONSIVE MEDIA QUERIES (MOBILE ONLY) ================= */
 @media screen and (max-width: 1024px) {
     #view-pos.active {
-        grid-template-columns: 1fr 300px; /* Tablet view: Menu + Cart */
+        display: flex !important;
+        flex-direction: column !important;
+        height: auto !important;
+        overflow-y: auto !important;
+    }
+    .pos-left {
+        height: auto !important;
+        max-height: 520px !important; 
+    }
+    .pos-middle {
+        height: auto !important;
+        margin-top: 10px;
     }
     .pos-right {
-        display: none; /* Tablet par live preview hide taaki jagah bache */
+        display: none !important; 
+    }
+    .admin-panel {
+        display: flex !important;
+        flex-direction: column !important;
+        height: auto !important;
+        overflow-y: auto !important;
     }
 }
 
 @media screen and (max-width: 768px) {
     body {
-        overflow: auto;
-        height: auto;
+        overflow: auto !important;
+        height: auto !important;
     }
     .app-header {
         flex-direction: column;
@@ -321,10 +338,10 @@ h3 { font-size: 15px; margin-bottom: 12px; color: #0f172a; }
         display: none;
     }
     #view-pos.active {
-        display: flex;
-        flex-direction: column;
-        height: auto;
-        overflow: visible;
+        display: flex !important;
+        flex-direction: column !important;
+        height: auto !important;
+        overflow: visible !important;
     }
     .pos-left, .pos-middle, .pos-right, .admin-panel, .history-container {
         height: auto !important;
@@ -335,8 +352,8 @@ h3 { font-size: 15px; margin-bottom: 12px; color: #0f172a; }
         margin-top: 10px;
     }
     .admin-panel {
-        display: flex;
-        flex-direction: column;
+        display: flex !important;
+        flex-direction: column !important;
     }
 }
 
