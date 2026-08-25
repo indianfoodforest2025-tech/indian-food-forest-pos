@@ -20,7 +20,7 @@ body {
 .app-header {
     background-color: #ffffff;
     border-bottom: 1px solid #e2e8f0;
-    padding: 12px 24px;
+    padding: 10px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -29,31 +29,32 @@ body {
 }
 
 .brand { display: flex; align-items: center; gap: 10px; }
-.brand-logo { font-size: 24px; }
-.brand-name { font-size: 18px; font-weight: 800; color: #0f172a; }
+.brand-logo { font-size: 22px; }
+.brand-name { font-size: 17px; font-weight: 800; color: #0f172a; }
 .brand-name span { color: #10b981; } 
 
-.nav-tabs { display: flex; gap: 8px; }
+.nav-tabs { display: flex; gap: 6px; }
 
 .nav-btn {
     background: transparent;
     border: none;
     color: #64748b;
-    padding: 10px 16px;
+    padding: 8px 14px;
     border-radius: 8px;
     font-weight: 600;
+    font-size: 13px;
     cursor: pointer;
     transition: all 0.2s ease;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
 }
 
 .nav-btn:hover { background: #f1f5f9; color: #0f172a; }
 .nav-btn.active { background: #10b981; color: #ffffff; }
 
-.user-status { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #64748b; }
-.status-indicator { width: 10px; height: 10px; border-radius: 50%; background-color: #10b981; }
+.user-status { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #64748b; }
+.status-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #10b981; }
 
 /* MAIN BODY VIEWS */
 .app-body {
@@ -65,43 +66,39 @@ body {
 .tab-view {
     display: none;
     height: 100%;
-    padding: 16px;
+    padding: 14px;
 }
 
 .tab-view.active { display: flex; }
 
 /* ================= 2. POS BILLING LAYOUT ================= */
-#view-pos { display: none; gap: 16px; height: 100%; }
+#view-pos { display: none; gap: 14px; height: 100%; }
 #view-pos.active {
     display: grid;
-    grid-template-columns: 1fr 340px 360px; /* Layout structure */
+    grid-template-columns: 1fr 330px 350px; /* Desktop Layout */
 }
 
 /* POS LEFT: MENU SELECTION */
 .pos-left { 
     display: flex; 
     flex-direction: column; 
-    gap: 12px; 
-    height: calc(100vh - 80px); /* Header minus karke height fix ki */
+    gap: 10px; 
+    height: calc(100vh - 75px); 
     overflow: hidden; 
 }
 
-/* Search bar */
-.search-bar-row { 
-    display: flex; 
-    gap: 10px; 
-    flex-shrink: 0; 
-}
+.search-bar-row { display: flex; gap: 8px; flex-shrink: 0; }
 
 .input-search {
     flex: 1;
     background: #ffffff;
     border: 1px solid #cbd5e1;
     border-radius: 8px;
-    padding: 10px 14px;
+    padding: 9px 12px;
     color: #0f172a;
     outline: none;
     font-weight: 500;
+    font-size: 13px;
 }
 .input-search:focus { border-color: #10b981; box-shadow: 0 0 0 2px rgba(16,185,129,0.1); }
 
@@ -109,60 +106,59 @@ body {
     background: #0ea5e9;
     color: #fff;
     border: none;
-    padding: 10px 16px;
+    padding: 9px 14px;
     border-radius: 8px;
     font-weight: 600;
+    font-size: 13px;
     cursor: pointer;
+    white-space: nowrap;
 }
 
-/* NAYA UPDATE: CATEGORIES WRAPPER & ARROWS */
+/* CATEGORIES WRAPPER & ARROWS */
 .categories-wrapper {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     flex-shrink: 0;
     width: 100%;
-    margin-bottom: 4px;
 }
 
 .scroll-arrow {
     background: #e2e8f0;
     border: none;
     border-radius: 50%;
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     color: #475569;
     flex-shrink: 0;
+    font-size: 13px;
     transition: background 0.2s;
-    font-size: 14px;
 }
 .scroll-arrow:hover { background: #cbd5e1; color: #0f172a; }
 
 /* CATEGORY PILLS */
 .category-pills {
     display: flex;
-    gap: 8px;
-    overflow-x: auto; /* Horizontal Scroll */
+    gap: 6px;
+    overflow-x: auto; 
     flex-grow: 1;
-    scroll-behavior: smooth; /* Arrow click par smooth slide */
+    scroll-behavior: smooth; 
     white-space: nowrap; 
-    scrollbar-width: none; /* Firefox me scrollbar hide */
+    scrollbar-width: none; 
 }
-.category-pills::-webkit-scrollbar { 
-    display: none; /* Chrome me scrollbar hide */
-}
+.category-pills::-webkit-scrollbar { display: none; }
 
 .cat-pill {
     background: #ffffff;
     border: 1px solid #cbd5e1;
     color: #475569;
-    padding: 8px 16px;
+    padding: 7px 14px;
     border-radius: 20px;
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 600;
     cursor: pointer;
     flex-shrink: 0; 
@@ -171,64 +167,59 @@ body {
 .cat-pill:hover { border-color: #10b981; color: #10b981; }
 .cat-pill.active { background: #10b981; color: #ffffff; border-color: #10b981; }
 
-/* MENU GRID (PERFECT SIZE) */
+/* MENU GRID */
 .menu-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(135px, 1fr)); 
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); 
+    gap: 8px;
     overflow-y: auto; 
     flex-grow: 1; 
-    padding-right: 6px;
-    padding-bottom: 40px;
+    padding-right: 4px;
+    padding-bottom: 30px;
 }
-
-/* Scrollbar for Menu Grid */
-.menu-grid::-webkit-scrollbar { width: 6px; }
+.menu-grid::-webkit-scrollbar { width: 5px; }
 .menu-grid::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
 
 .menu-card {
     background: #ffffff;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
-    padding: 10px;
+    padding: 8px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 95px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    min-height: 90px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
     transition: transform 0.1s ease, border-color 0.2s ease;
 }
-.menu-card:hover { border-color: #10b981; transform: translateY(-2px); }
+.menu-card:hover { border-color: #10b981; transform: translateY(-1px); }
 
-/* FONT FIX */
 .menu-card-title {
-    font-size: 12.5px;
+    font-size: 12px;
     font-weight: 700;
     color: #1e293b;
     line-height: 1.25;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     word-break: break-word; 
 }
 
-/* BUTTON FIX */
-.menu-card-prices { display: flex; gap: 6px; }
+.menu-card-prices { display: flex; gap: 4px; }
 
 .price-btn {
     flex: 1;
     background: #f8fafc;
     border: 1px solid #cbd5e1;
     color: #0f172a;
-    border-radius: 6px;
-    padding: 6px 2px; 
-    font-size: 11px;
+    border-radius: 5px;
+    padding: 5px 2px; 
+    font-size: 10.5px;
     font-weight: 700;
     cursor: pointer;
     text-align: center;
-    transition: all 0.2s ease;
+    transition: all 0.2s;
 }
 .price-btn:hover { background: #10b981; color: #fff; border-color: #10b981; }
 .price-btn.full-only { width: 100%; }
-
 
 /* POS MIDDLE: CART CONTAINER */
 .pos-middle {
@@ -237,71 +228,120 @@ body {
     border-radius: 12px;
     display: flex;
     flex-direction: column;
-    padding: 16px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    height: calc(100vh - 80px); 
+    padding: 14px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    height: calc(100vh - 75px); 
 }
 
-.table-bar { display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid #e2e8f0; flex-shrink: 0; }
-.table-bar label { font-weight: 600; font-size: 14px; }
-.table-bar select { background: #f8fafc; color: #0f172a; border: 1px solid #cbd5e1; padding: 6px 10px; border-radius: 6px; outline: none; font-weight: 600; }
-.btn-add-table { background: #3b82f6; color: white; border: none; width: 30px; height: 30px; border-radius: 6px; cursor: pointer; font-weight: bold; }
-.order-id-badge { font-family: 'Courier Prime', monospace; font-size: 13px; background: #f1f5f9; color: #475569; padding: 6px 10px; border-radius: 4px; font-weight: bold; border: 1px solid #e2e8f0; }
+.table-bar { display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px solid #e2e8f0; flex-shrink: 0; }
+.table-bar label { font-weight: 600; font-size: 13px; }
+.table-bar select { background: #f8fafc; color: #0f172a; border: 1px solid #cbd5e1; padding: 5px 8px; border-radius: 6px; font-weight: 600; font-size: 13px; }
+.btn-add-table { background: #3b82f6; color: white; border: none; width: 28px; height: 28px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+.order-id-badge { font-family: 'Courier Prime', monospace; font-size: 12px; background: #f1f5f9; color: #475569; padding: 5px 8px; border-radius: 4px; font-weight: bold; border: 1px solid #e2e8f0; }
 
-/* Cart Items */
-.cart-items-container { flex: 1; overflow-y: auto; margin: 12px 0; display: flex; flex-direction: column; gap: 8px; }
-.cart-row { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; border: 1px solid #f1f5f9; padding: 10px 12px; border-radius: 8px; }
-.cart-row-title { font-size: 13px; font-weight: 600; color: #1e293b; max-width: 120px; line-height: 1.3; }
-.cart-row-controls { display: flex; align-items: center; gap: 8px; }
-.btn-qty { background: #e2e8f0; border: none; color: #0f172a; width: 24px; height: 24px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+.cart-items-container { flex: 1; overflow-y: auto; margin: 10px 0; display: flex; flex-direction: column; gap: 6px; }
+.cart-row { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; border: 1px solid #f1f5f9; padding: 8px 10px; border-radius: 6px; }
+.cart-row-title { font-size: 12px; font-weight: 600; color: #1e293b; max-width: 120px; }
+.cart-row-controls { display: flex; align-items: center; gap: 6px; }
+.btn-qty { background: #e2e8f0; border: none; color: #0f172a; width: 24px; height: 24px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 12px; }
 .btn-qty:hover { background: #cbd5e1; }
 
-.cart-summary-box { border-top: 1px solid #e2e8f0; padding-top: 12px; flex-shrink: 0; }
-.grand-total-line { font-size: 18px; font-weight: 800; color: #0f172a; margin-bottom: 12px; display: flex; justify-content: space-between; }
-.action-btn-group { display: flex; flex-direction: column; gap: 8px; }
-.btn-action { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; font-size: 15px; }
+.cart-summary-box { border-top: 1px solid #e2e8f0; padding-top: 10px; flex-shrink: 0; }
+.grand-total-line { font-size: 17px; font-weight: 800; color: #0f172a; margin-bottom: 10px; display: flex; justify-content: space-between; }
+.action-btn-group { display: flex; flex-direction: column; gap: 6px; }
+.btn-action { width: 100%; padding: 13px; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; font-size: 14px; }
 .btn-print { background: #10b981; color: #fff; }
 .btn-print:hover { background: #059669; }
 
-/* ================= 3. EXCEL BUTTON ================= */
+/* EXCEL BUTTON */
 .btn-excel { background: #10b981; color: #fff; border: none; padding: 10px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; }
 .btn-excel:hover { background: #059669; }
 
-/* ================= 4. RECEIPT PREVIEW (No Changes here) ================= */
-.pos-right { background: #cbd5e1; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; align-items: center; overflow-y: auto; height: calc(100vh - 80px); }
-.preview-header { font-size: 12px; font-weight: 700; color: #475569; margin-bottom: 12px; flex-shrink: 0; }
+/* RECEIPT PREVIEW */
+.pos-right { background: #cbd5e1; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; align-items: center; overflow-y: auto; height: calc(100vh - 75px); }
+.preview-header { font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 10px; flex-shrink: 0; }
 
-.receipt-paper { width: 78mm; background: #ffffff; color: #000000; font-family: 'Courier Prime', 'Courier New', monospace; padding: 16px 12px; font-size: 12px; line-height: 1.35; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-radius: 4px; flex-shrink: 0; }
+.receipt-paper { width: 78mm; background: #ffffff; color: #000000; font-family: 'Courier Prime', monospace; padding: 14px 10px; font-size: 11.5px; line-height: 1.3; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-radius: 4px; flex-shrink: 0; }
 .r-center { text-align: center; }
 .r-right { text-align: right; }
-.r-logo { font-size: 26px; margin-bottom: 4px; }
-.r-title { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
-.r-address { font-size: 10.5px; color: #111; line-height: 1.3; margin-bottom: 4px; }
-.r-dash { border-top: 1px dashed #000; margin: 8px 0; }
-.r-meta-row { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 2px; }
-.r-table { width: 100%; border-collapse: collapse; margin: 4px 0; font-size: 12px; }
-.r-table th { text-align: left; font-weight: normal; color: #222; padding-bottom: 4px; border-bottom: 1px dashed #000; }
-.r-table td { vertical-align: top; padding: 4px 0; }
-.r-total-row { display: flex; justify-content: space-between; margin-top: 4px; font-size: 12px; }
-.r-grand-total { font-size: 15px; font-weight: 700; margin-top: 6px; }
-.r-footer-text { font-size: 11px; color: #333; margin-top: 6px; }
+.r-logo { font-size: 24px; margin-bottom: 2px; }
+.r-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.r-address { font-size: 10px; line-height: 1.25; margin-bottom: 4px; }
+.r-dash { border-top: 1px dashed #000; margin: 6px 0; }
+.r-meta-row { display: flex; justify-content: space-between; font-size: 10.5px; margin-bottom: 2px; }
+.r-table { width: 100%; border-collapse: collapse; margin: 4px 0; font-size: 11.5px; }
+.r-table th { text-align: left; font-weight: normal; border-bottom: 1px dashed #000; padding-bottom: 3px; }
+.r-table td { vertical-align: top; padding: 3px 0; }
+.r-total-row { display: flex; justify-content: space-between; margin-top: 3px; font-size: 11.5px; }
+.r-grand-total { font-size: 14px; font-weight: 700; margin-top: 4px; }
+.r-footer-text { font-size: 10.5px; text-align: center; margin-top: 4px; }
 
-/* ================= 5. ADMIN PANELS ================= */
-.admin-panel { display: grid; grid-template-columns: 320px 1fr; gap: 20px; width: 100%; height: calc(100vh - 80px); overflow-y: auto; }
-.admin-form-box, .admin-table-box, .history-container { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-.history-container { width: 100%; height: calc(100vh - 80px); overflow-y: auto; }
-h3 { font-size: 16px; margin-bottom: 16px; color: #0f172a; }
-.form-group { margin-bottom: 14px; }
-.form-group label { display: block; font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 6px; }
-.form-group input, .form-group select { width: 100%; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; color: #0f172a; outline: none; font-weight: 500;}
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.btn-primary { width: 100%; background: #3b82f6; color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 10px; }
-.btn-primary:hover { background: #2563eb; }
+/* ADMIN PANELS */
+.admin-panel { display: grid; grid-template-columns: 310px 1fr; gap: 16px; width: 100%; height: calc(100vh - 75px); overflow-y: auto; }
+.admin-form-box, .admin-table-box, .history-container { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+.history-container { width: 100%; height: calc(100vh - 75px); overflow-y: auto; }
+h3 { font-size: 15px; margin-bottom: 12px; color: #0f172a; }
+.form-group { margin-bottom: 12px; }
+.form-group label { display: block; font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 4px; }
+.form-group input, .form-group select { width: 100%; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 9px; color: #0f172a; outline: none; font-size: 13px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.btn-primary { width: 100%; background: #3b82f6; color: #fff; border: none; padding: 11px; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 8px; }
 .admin-table { width: 100%; border-collapse: collapse; text-align: left; }
-.admin-table th, .admin-table td { padding: 12px; border-bottom: 1px solid #e2e8f0; font-size: 14px; }
+.admin-table th, .admin-table td { padding: 10px; border-bottom: 1px solid #e2e8f0; font-size: 13px; }
 .admin-table th { color: #64748b; font-weight: 700; background: #f8fafc; }
 
-/* ================= 6. THERMAL PRINTER BLANK PAGE FIX ================= */
+
+/* ================= 3. RESPONSIVE MEDIA QUERIES (MOBILE & TABLET FIX) ================= */
+@media screen and (max-width: 1024px) {
+    #view-pos.active {
+        grid-template-columns: 1fr 300px; /* Tablet view: Menu + Cart */
+    }
+    .pos-right {
+        display: none; /* Tablet par live preview hide taaki jagah bache */
+    }
+}
+
+@media screen and (max-width: 768px) {
+    body {
+        overflow: auto;
+        height: auto;
+    }
+    .app-header {
+        flex-direction: column;
+        gap: 8px;
+        align-items: stretch;
+        padding: 8px 12px;
+    }
+    .nav-tabs {
+        overflow-x: auto;
+        padding-bottom: 4px;
+        justify-content: flex-start;
+    }
+    .nav-tabs::-webkit-scrollbar {
+        display: none;
+    }
+    #view-pos.active {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        overflow: visible;
+    }
+    .pos-left, .pos-middle, .pos-right, .admin-panel, .history-container {
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+    }
+    .pos-middle {
+        margin-top: 10px;
+    }
+    .admin-panel {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+
+/* ================= 4. THERMAL PRINTER FIX ================= */
 @media print {
     .app-header, .nav-tabs, .pos-left, .pos-middle, .preview-header, .admin-panel {
         display: none !important;
