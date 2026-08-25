@@ -8,8 +8,8 @@
 
 /* ================= 1. LIGHT PROFESSIONAL THEME ================= */
 body {
-    background-color: #f1f5f9; /* Light grey background */
-    color: #1e293b; /* Dark text for readability */
+    background-color: #f1f5f9; 
+    color: #1e293b; 
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -25,12 +25,13 @@ body {
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    flex-shrink: 0;
 }
 
 .brand { display: flex; align-items: center; gap: 10px; }
 .brand-logo { font-size: 24px; }
 .brand-name { font-size: 18px; font-weight: 800; color: #0f172a; }
-.brand-name span { color: #10b981; } /* Green accent */
+.brand-name span { color: #10b981; } 
 
 .nav-tabs { display: flex; gap: 8px; }
 
@@ -48,15 +49,8 @@ body {
     gap: 8px;
 }
 
-.nav-btn:hover {
-    background: #f1f5f9;
-    color: #0f172a;
-}
-
-.nav-btn.active {
-    background: #10b981; /* Green Active state */
-    color: #ffffff;
-}
+.nav-btn:hover { background: #f1f5f9; color: #0f172a; }
+.nav-btn.active { background: #10b981; color: #ffffff; }
 
 .user-status { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #64748b; }
 .status-indicator { width: 10px; height: 10px; border-radius: 50%; background-color: #10b981; }
@@ -80,13 +74,24 @@ body {
 #view-pos { display: none; gap: 16px; height: 100%; }
 #view-pos.active {
     display: grid;
-    grid-template-columns: 1fr 340px 360px;
+    grid-template-columns: 1fr 340px 360px; /* Layout structure */
 }
 
-/* POS LEFT: MENU SELECTION */
-.pos-left { display: flex; flex-direction: column; gap: 12px; overflow: hidden; }
+/* POS LEFT: MENU SELECTION (EKDUM FIXED AUR SCROLLABLE) */
+.pos-left { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 12px; 
+    height: calc(100vh - 80px); /* Header minus karke height fix ki */
+    overflow: hidden; 
+}
 
-.search-bar-row { display: flex; gap: 10px; }
+/* Search bar aur Add button kabhi dabenge nahi */
+.search-bar-row { 
+    display: flex; 
+    gap: 10px; 
+    flex-shrink: 0; 
+}
 
 .input-search {
     flex: 1;
@@ -110,13 +115,20 @@ body {
     cursor: pointer;
 }
 
-/* Category Pills */
+/* CATEGORY PILLS (Gichad-Michad FIX) */
 .category-pills {
     display: flex;
     gap: 8px;
-    overflow-x: auto;
+    overflow-x: auto; /* Horizontal Scroll */
     padding-bottom: 8px;
+    flex-shrink: 0; /* IMPORTANT: Box chhota nahi hoga */
+    white-space: nowrap; /* Text next line me nahi jayega */
 }
+
+/* Sleek Scrollbar for Categories */
+.category-pills::-webkit-scrollbar { height: 4px; }
+.category-pills::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
 .cat-pill {
     background: #ffffff;
     border: 1px solid #cbd5e1;
@@ -126,52 +138,52 @@ body {
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    white-space: nowrap;
+    flex-shrink: 0; /* IMPORTANT: Button dabege nahi */
     transition: all 0.2s;
 }
 .cat-pill:hover { border-color: #10b981; color: #10b981; }
-.cat-pill.active {
-    background: #10b981;
-    color: #ffffff;
-    border-color: #10b981;
-}
+.cat-pill.active { background: #10b981; color: #ffffff; border-color: #10b981; }
 
-/* Menu Grid & Cards */
+/* MENU GRID (PERFECT SIZE) */
 .menu-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* 140px ensures smaller screens adjust well */
-    gap: 12px;
-    overflow-y: auto;
-    padding-right: 4px;
-    padding-bottom: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(135px, 1fr)); /* Size optimized for counter */
+    gap: 10px;
+    overflow-y: auto; /* Sirf ye hissa scroll hoga */
+    flex-grow: 1; /* Bachi hui jagah le lega */
+    padding-right: 6px;
+    padding-bottom: 40px;
 }
+
+/* Scrollbar for Menu Grid */
+.menu-grid::-webkit-scrollbar { width: 6px; }
+.menu-grid::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
 
 .menu-card {
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    padding: 12px;
+    border-radius: 8px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 110px;
+    min-height: 95px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     transition: transform 0.1s ease, border-color 0.2s ease;
 }
 .menu-card:hover { border-color: #10b981; transform: translateY(-2px); }
 
-/* FIX: Text will automatically drop to next line and NOT go out of box */
+/* FONT FIX: Text out of box issue solved */
 .menu-card-title {
-    font-size: 12px; /* Thoda chhota kiya taaki sab fit aaye */
+    font-size: 12.5px;
     font-weight: 700;
     color: #1e293b;
-    line-height: 1.3;
+    line-height: 1.25;
     margin-bottom: 8px;
-    word-wrap: break-word; /* Lamba naam automatically niche aayega */
-    overflow-wrap: break-word;
+    word-break: break-word; /* Force break if word is too long */
 }
 
-/* FIX: Buttons thode compress kiye taaki bahar na jayein */
+/* BUTTON FIX */
 .menu-card-prices { display: flex; gap: 6px; }
 
 .price-btn {
@@ -180,8 +192,8 @@ body {
     border: 1px solid #cbd5e1;
     color: #0f172a;
     border-radius: 6px;
-    padding: 6px 2px; /* Padding kam ki */
-    font-size: 11px; /* Font thoda kam kiya */
+    padding: 6px 2px; 
+    font-size: 11px;
     font-weight: 700;
     cursor: pointer;
     text-align: center;
@@ -189,6 +201,7 @@ body {
 }
 .price-btn:hover { background: #10b981; color: #fff; border-color: #10b981; }
 .price-btn.full-only { width: 100%; }
+
 
 /* POS MIDDLE: CART CONTAINER */
 .pos-middle {
@@ -199,145 +212,39 @@ body {
     flex-direction: column;
     padding: 16px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    height: calc(100vh - 80px); /* Height match with left column */
 }
 
-.table-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-bottom: 12px;
-    border-bottom: 1px solid #e2e8f0;
-}
+.table-bar { display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid #e2e8f0; flex-shrink: 0; }
 .table-bar label { font-weight: 600; font-size: 14px; }
-.table-bar select {
-    background: #f8fafc;
-    color: #0f172a;
-    border: 1px solid #cbd5e1;
-    padding: 6px 10px;
-    border-radius: 6px;
-    outline: none;
-    font-weight: 600;
-}
-
-.btn-add-table {
-    background: #3b82f6;
-    color: white;
-    border: none;
-    width: 30px;
-    height: 30px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.order-id-badge {
-    font-family: 'Courier Prime', monospace;
-    font-size: 13px;
-    background: #f1f5f9;
-    color: #475569;
-    padding: 6px 10px;
-    border-radius: 4px;
-    font-weight: bold;
-    border: 1px solid #e2e8f0;
-}
+.table-bar select { background: #f8fafc; color: #0f172a; border: 1px solid #cbd5e1; padding: 6px 10px; border-radius: 6px; outline: none; font-weight: 600; }
+.btn-add-table { background: #3b82f6; color: white; border: none; width: 30px; height: 30px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+.order-id-badge { font-family: 'Courier Prime', monospace; font-size: 13px; background: #f1f5f9; color: #475569; padding: 6px 10px; border-radius: 4px; font-weight: bold; border: 1px solid #e2e8f0; }
 
 /* Cart Items */
-.cart-items-container {
-    flex: 1;
-    overflow-y: auto;
-    margin: 12px 0;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-.cart-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #f8fafc;
-    border: 1px solid #f1f5f9;
-    padding: 10px 12px;
-    border-radius: 8px;
-}
-.cart-row-title { font-size: 12px; font-weight: 600; color: #1e293b; max-width: 120px; line-height: 1.3; }
+.cart-items-container { flex: 1; overflow-y: auto; margin: 12px 0; display: flex; flex-direction: column; gap: 8px; }
+.cart-row { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; border: 1px solid #f1f5f9; padding: 10px 12px; border-radius: 8px; }
+.cart-row-title { font-size: 13px; font-weight: 600; color: #1e293b; max-width: 120px; line-height: 1.3; }
 .cart-row-controls { display: flex; align-items: center; gap: 8px; }
-.btn-qty {
-    background: #e2e8f0;
-    border: none;
-    color: #0f172a;
-    width: 24px;
-    height: 24px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-}
+.btn-qty { background: #e2e8f0; border: none; color: #0f172a; width: 24px; height: 24px; border-radius: 4px; cursor: pointer; font-weight: bold; }
 .btn-qty:hover { background: #cbd5e1; }
 
-.cart-summary-box { border-top: 1px solid #e2e8f0; padding-top: 12px; }
-.grand-total-line {
-    font-size: 18px;
-    font-weight: 800;
-    color: #0f172a;
-    margin-bottom: 12px;
-    display: flex;
-    justify-content: space-between;
-}
-
+.cart-summary-box { border-top: 1px solid #e2e8f0; padding-top: 12px; flex-shrink: 0; }
+.grand-total-line { font-size: 18px; font-weight: 800; color: #0f172a; margin-bottom: 12px; display: flex; justify-content: space-between; }
 .action-btn-group { display: flex; flex-direction: column; gap: 8px; }
-.btn-action {
-    width: 100%;
-    padding: 14px;
-    border: none;
-    border-radius: 8px;
-    font-weight: 800;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    font-size: 15px;
-}
+.btn-action { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; font-size: 15px; }
 .btn-print { background: #10b981; color: #fff; }
 .btn-print:hover { background: #059669; }
 
 /* ================= 3. EXCEL BUTTON ================= */
-.btn-excel {
-    background: #10b981;
-    color: #fff;
-    border: none;
-    padding: 10px 16px;
-    border-radius: 6px;
-    font-weight: 700;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
+.btn-excel { background: #10b981; color: #fff; border: none; padding: 10px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; }
 .btn-excel:hover { background: #059669; }
 
-/* ================= 4. RECEIPT PREVIEW ================= */
-.pos-right {
-    background: #cbd5e1; /* Grey background so receipt pops */
-    border-radius: 12px;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow-y: auto;
-}
-.preview-header { font-size: 12px; font-weight: 700; color: #475569; margin-bottom: 12px; }
+/* ================= 4. RECEIPT PREVIEW (No Changes here) ================= */
+.pos-right { background: #cbd5e1; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; align-items: center; overflow-y: auto; height: calc(100vh - 80px); }
+.preview-header { font-size: 12px; font-weight: 700; color: #475569; margin-bottom: 12px; flex-shrink: 0; }
 
-.receipt-paper {
-    width: 78mm;
-    background: #ffffff;
-    color: #000000;
-    font-family: 'Courier Prime', 'Courier New', monospace;
-    padding: 16px 12px;
-    font-size: 12px;
-    line-height: 1.35;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    border-radius: 4px;
-}
+.receipt-paper { width: 78mm; background: #ffffff; color: #000000; font-family: 'Courier Prime', 'Courier New', monospace; padding: 16px 12px; font-size: 12px; line-height: 1.35; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-radius: 4px; flex-shrink: 0; }
 .r-center { text-align: center; }
 .r-right { text-align: right; }
 .r-logo { font-size: 26px; margin-bottom: 4px; }
@@ -353,30 +260,25 @@ body {
 .r-footer-text { font-size: 11px; color: #333; margin-top: 6px; }
 
 /* ================= 5. ADMIN PANELS ================= */
-.admin-panel { display: grid; grid-template-columns: 320px 1fr; gap: 20px; width: 100%; }
+.admin-panel { display: grid; grid-template-columns: 320px 1fr; gap: 20px; width: 100%; height: calc(100vh - 80px); overflow-y: auto; }
 .admin-form-box, .admin-table-box, .history-container { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-.history-container { width: 100%; }
+.history-container { width: 100%; height: calc(100vh - 80px); overflow-y: auto; }
 h3 { font-size: 16px; margin-bottom: 16px; color: #0f172a; }
-
 .form-group { margin-bottom: 14px; }
 .form-group label { display: block; font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 6px; }
 .form-group input, .form-group select { width: 100%; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; color: #0f172a; outline: none; font-weight: 500;}
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .btn-primary { width: 100%; background: #3b82f6; color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 10px; }
 .btn-primary:hover { background: #2563eb; }
-
 .admin-table { width: 100%; border-collapse: collapse; text-align: left; }
 .admin-table th, .admin-table td { padding: 12px; border-bottom: 1px solid #e2e8f0; font-size: 14px; }
 .admin-table th { color: #64748b; font-weight: 700; background: #f8fafc; }
 
 /* ================= 6. THERMAL PRINTER BLANK PAGE FIX ================= */
 @media print {
-    /* 1. Website ke saare UI elements gayab kar do (display: none se) */
     .app-header, .nav-tabs, .pos-left, .pos-middle, .preview-header, .admin-panel {
         display: none !important;
     }
-
-    /* 2. Body aur Container ko free kar do */
     body, .app-body, #view-pos, .pos-right {
         display: block !important;
         background: transparent !important;
@@ -384,19 +286,15 @@ h3 { font-size: 16px; margin-bottom: 16px; color: #0f172a; }
         margin: 0 !important;
         height: auto !important;
     }
-
-    /* 3. Sirf Receipt print hogi - Exactly printer ke hisaab se */
     #receipt-print-area {
         position: absolute !important;
         left: 0 !important;
         top: 0 !important;
-        width: 78mm !important; /* Exact width for 3-inch thermal printer */
+        width: 78mm !important;
         margin: 0 !important;
         padding: 0 !important;
         box-shadow: none !important;
     }
-
-    /* 4. Page Size Declare kar do */
     @page {
         size: 80mm auto;
         margin: 0;
