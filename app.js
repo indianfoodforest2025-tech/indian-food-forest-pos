@@ -113,7 +113,7 @@ window.onTableChange = function(val) {
 };
 
 // ==========================================
-// SCROLL CATEGORIES LOGIC (NAYA UPDATE)
+// SCROLL CATEGORIES LOGIC
 // ==========================================
 window.scrollCategories = function(amount) {
     const container = document.getElementById('category-pills-container');
@@ -123,7 +123,7 @@ window.scrollCategories = function(amount) {
 };
 
 // ==========================================
-// FIREBASE LISTENERS & MENU RENDER (MERGED FIX)
+// FIREBASE LISTENERS & MENU RENDER
 // ==========================================
 function initRealtimeListeners() {
     // Menu Listener
@@ -256,6 +256,68 @@ function updateDateTime() {
     document.getElementById('r-time').innerText = `Time: ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
 }
 
+// ==========================================
+// NAYA PRO PRINT LOGIC (INVISIBLE IFRAME)
+// ==========================================
+window.printThermalReceipt = function() {
+    const receiptContent = document.getElementById('receipt-print-area').innerHTML;
+    
+    // Ek invisible frame bana rahe hain
+    const printFrame = document.createElement('iframe');
+    printFrame.style.display = 'none';
+    document.body.appendChild(printFrame);
+    
+    const frameDoc = printFrame.contentWindow.document;
+    
+    // Sirf receipt ke size aur font ki CSS bhej rahe hain
+    const printHTML = `
+        <html>
+        <head>
+            <style>
+                @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
+                body {
+                    font-family: 'Courier Prime', monospace;
+                    width: 78mm;
+                    margin: 0;
+                    padding: 0;
+                    color: #000;
+                    background: #fff;
+                    font-size: 12px;
+                }
+                .r-center { text-align: center; }
+                .r-right { text-align: right; }
+                .r-logo { font-size: 26px; margin-bottom: 4px; }
+                .r-title { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+                .r-address { font-size: 10.5px; line-height: 1.3; margin-bottom: 4px; }
+                .r-dash { border-top: 1px dashed #000; margin: 8px 0; }
+                .r-meta-row { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 2px; }
+                .r-table { width: 100%; border-collapse: collapse; margin: 4px 0; font-size: 12px; }
+                .r-table th { text-align: left; font-weight: normal; border-bottom: 1px dashed #000; padding-bottom: 4px; }
+                .r-table td { vertical-align: top; padding: 4px 0; }
+                .r-total-row { display: flex; justify-content: space-between; margin-top: 4px; font-size: 12px; }
+                .r-grand-total { font-size: 15px; font-weight: 700; margin-top: 6px; }
+                .r-footer-text { font-size: 11px; text-align: center; margin-top: 6px; }
+                @page { size: 80mm auto; margin: 0; }
+            </style>
+        </head>
+        <body>
+            ${receiptContent}
+        </body>
+        </html>
+    `;
+    
+    frameDoc.open();
+    frameDoc.write(printHTML);
+    frameDoc.close();
+    
+    // Thoda delay taaki font load ho jaye aur print perfectly trigger ho
+    setTimeout(() => {
+        printFrame.contentWindow.focus();
+        printFrame.contentWindow.print();
+        document.body.removeChild(printFrame); // Print ke baad frame saaf
+    }, 500);
+}
+
 // Save Order & Print 
 window.saveAndPrintOrder = async function() {
     if (activeCart.length === 0) return alert("Bhai, Cart empty hai! Pehle item add karo.");
@@ -280,13 +342,14 @@ window.saveAndPrintOrder = async function() {
         console.warn("Offline Saved", err);
     }
 
-    window.print();
+    // Yahan PRO print method call ho raha hai (window.print() ki jagah)
+    printThermalReceipt();
 
     // Cart Clear Fix
     setTimeout(() => {
         activeCart = [];
         renderCart();
-    }, 500);
+    }, 1000);
 };
 
 // ==========================================
@@ -306,7 +369,6 @@ window.handleMenuUpload = async function(e) {
 
 function renderMenuAdminTable(items) {
     document.getElementById('menu-master-table').innerHTML = items.map(i => {
-        // PRO FIX: Default items par lock icon lagaya, upload kiye hue items par delete button.
         const actionBtn = i.id 
             ? `<button style="color:#ef4444; background:none; border:none; cursor:pointer; font-size:16px;" onclick="deleteRecord('menu', '${i.id}')" title="Delete Item"><i class="fa-solid fa-trash"></i></button>`
             : `<span style="color:#94a3b8; font-size:12px; font-weight:bold;"><i class="fa-solid fa-lock" title="Default System Item"></i> System</span>`;
@@ -338,7 +400,8 @@ function renderHistoryTable(items) {
         const order = items.find(o => o.id === docId);
         if (order) {
             syncThermalReceipt(order.items, order.grandTotal, order.orderId, order.tableNo);
-            window.print();
+            // Reprint me bhi PRO method laga diya
+            printThermalReceipt(); 
         }
     };
 }
@@ -350,7 +413,6 @@ window.exportToExcel = function() {
     XLSX.writeFile(workbook, "Indian_Food_Forest_Report.xlsx");
 };
 
-// Global Delete Function
 window.deleteRecord = async function(collName, id) {
     if (confirm("Are you sure you want to delete this?")) {
         if(id) await deleteDoc(doc(db, collName, id));
