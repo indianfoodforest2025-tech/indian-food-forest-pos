@@ -12,8 +12,102 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* ================= PASSWORD MODAL CSS ================= */
+        #password-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .password-card {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+            width: 340px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+        .password-card .lock-icon {
+            font-size: 40px;
+            color: #10b981;
+            margin-bottom: 15px;
+        }
+        .password-card h3 {
+            font-size: 18px;
+            color: #0f172a;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        .password-card p {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+        .password-input {
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            text-align: center;
+            letter-spacing: 4px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            outline: none;
+            margin-bottom: 15px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .password-input:focus {
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+        }
+        .btn-unlock {
+            width: 100%;
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-unlock:hover {
+            background: #059669;
+        }
+        #password-error {
+            color: #ef4444;
+            font-size: 12px;
+            margin-top: 10px;
+            font-weight: 600;
+            display: none;
+        }
+    </style>
 </head>
 <body class="light-theme">
+
+    <!-- ================= PASSWORD LOCK SCREEN ================= -->
+    <div id="password-overlay">
+        <div class="password-card">
+            <div class="lock-icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <h3>System Locked</h3>
+            <p>Indian Food Forest - Secure POS</p>
+            <form onsubmit="verifyPassword(event)">
+                <input type="password" id="pos-pin-input" class="password-input" placeholder="••••" maxlength="6" autofocus required>
+                <button type="submit" class="btn-unlock">Unlock System</button>
+            </form>
+            <div id="password-error">Galat Password! Dubara koshish karein.</div>
+        </div>
+    </div>
 
     <!-- TOP HEADER -->
     <header class="app-header">
@@ -49,7 +143,7 @@
                     <button class="btn-manual" onclick="openCustomItemModal()"><i class="fa-solid fa-plus"></i> Custom Item</button>
                 </div>
 
-                <!-- NAYA UPDATE: Categories with Scroll Arrows -->
+                <!-- Categories with Scroll Arrows -->
                 <div class="categories-wrapper">
                     <button class="scroll-arrow" onclick="scrollCategories(-200)"><i class="fa-solid fa-chevron-left"></i></button>
                     
@@ -102,7 +196,7 @@
                 </div>
             </div>
 
-            <!-- Right: Thermal Receipt Preview (Fixed Code) -->
+            <!-- Right: Thermal Receipt Preview -->
             <div class="pos-right">
                 <div class="preview-header">LIVE PRINT PREVIEW</div>
                 <div class="receipt-paper" id="receipt-print-area">
@@ -314,13 +408,28 @@
     <!-- Main JS Link -->
     <script type="module" src="app.js"></script>
 
-    <!-- Tab Switching Script -->
+    <!-- Tab Switching & Password Verification Script -->
     <script>
         function switchTab(tabId) {
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.tab-view').forEach(v => v.classList.remove('active'));
             event.currentTarget.classList.add('active');
             document.getElementById('view-' + tabId).classList.add('active');
+        }
+
+        // PASSWORD VERIFICATION LOGIC (PIN: 7860)
+        function verifyPassword(event) {
+            event.preventDefault();
+            const enteredPin = document.getElementById('pos-pin-input').value;
+            const errorMsg = document.getElementById('password-error');
+
+            if (enteredPin === "7860") {
+                document.getElementById('password-overlay').style.display = 'none';
+            } else {
+                errorMsg.style.display = 'block';
+                document.getElementById('pos-pin-input').value = '';
+                document.getElementById('pos-pin-input').focus();
+            }
         }
     </script>
 </body>
