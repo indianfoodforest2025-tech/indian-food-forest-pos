@@ -113,7 +113,17 @@ window.onTableChange = function(val) {
 };
 
 // ==========================================
-// FIREBASE LISTENERS & MENU RENDER (BUG FIXED)
+// SCROLL CATEGORIES LOGIC (NAYA UPDATE)
+// ==========================================
+window.scrollCategories = function(amount) {
+    const container = document.getElementById('category-pills-container');
+    if (container) {
+        container.scrollBy({ left: amount, behavior: 'smooth' });
+    }
+};
+
+// ==========================================
+// FIREBASE LISTENERS & MENU RENDER (MERGED FIX)
 // ==========================================
 function initRealtimeListeners() {
     // Menu Listener
@@ -121,7 +131,7 @@ function initRealtimeListeners() {
         let dbMenu = [];
         snapshot.forEach(docSnap => dbMenu.push({ id: docSnap.id, ...docSnap.data() }));
         
-        // BUG FIX: Ab Default Menu aur Firebase Menu dono Merge honge! (Koi gayab nahi hoga)
+        // Merge Default & Firebase Menu
         loadedMenu = [...defaultMenu, ...dbMenu]; 
         
         renderMenuGrid(loadedMenu);
@@ -272,7 +282,7 @@ window.saveAndPrintOrder = async function() {
 
     window.print();
 
-    // Cart Clear 
+    // Cart Clear Fix
     setTimeout(() => {
         activeCart = [];
         renderCart();
@@ -295,15 +305,22 @@ window.handleMenuUpload = async function(e) {
 };
 
 function renderMenuAdminTable(items) {
-    document.getElementById('menu-master-table').innerHTML = items.map(i => `
-        <tr>
-            <td>${i.name}</td>
-            <td>${i.category}</td>
-            <td>₹${i.priceHalf || 0}</td>
-            <td>₹${i.priceFull}</td>
-            <td><button style="color:red; background:none; border:none; cursor:pointer;" onclick="deleteRecord('menu', '${i.id}')"><i class="fa-solid fa-trash"></i></button></td>
-        </tr>
-    `).join('');
+    document.getElementById('menu-master-table').innerHTML = items.map(i => {
+        // PRO FIX: Default items par lock icon lagaya, upload kiye hue items par delete button.
+        const actionBtn = i.id 
+            ? `<button style="color:#ef4444; background:none; border:none; cursor:pointer; font-size:16px;" onclick="deleteRecord('menu', '${i.id}')" title="Delete Item"><i class="fa-solid fa-trash"></i></button>`
+            : `<span style="color:#94a3b8; font-size:12px; font-weight:bold;"><i class="fa-solid fa-lock" title="Default System Item"></i> System</span>`;
+
+        return `
+            <tr>
+                <td>${i.name}</td>
+                <td>${i.category}</td>
+                <td>₹${i.priceHalf || 0}</td>
+                <td>₹${i.priceFull}</td>
+                <td>${actionBtn}</td>
+            </tr>
+        `;
+    }).join('');
 }
 
 function renderHistoryTable(items) {
@@ -337,6 +354,5 @@ window.exportToExcel = function() {
 window.deleteRecord = async function(collName, id) {
     if (confirm("Are you sure you want to delete this?")) {
         if(id) await deleteDoc(doc(db, collName, id));
-        else alert("Cannot delete default hardcoded items. Only works for uploaded items.");
     }
 };
